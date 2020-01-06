@@ -33,7 +33,7 @@ jobs:
             - dependencies-{{ .Environment.CACHE_VERSION }}
             # fallback to using the latest cache if no exact match is found
             - dependencies-
-  build-for-pro:
+  buildforprod:
     docker:
       - image: debian:stretch
     working_directory: ~/repo
@@ -61,7 +61,7 @@ workflows:
       - test:
           requires:
             - install
-      - build-for-pro:
+      - buildforprod:
           requires:
             - install
             - test
