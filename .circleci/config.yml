@@ -22,10 +22,10 @@ jobs:
           name: yarn install cmd
           command: yarn install
       - attach_workspace:
-          at: /tmp
+          at: /doc
       - run:
           name: Deploy app
-          command: npx netlify-cli deploy --prod --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID --dir=/tmp/server-doc
+          command: npx netlify-cli deploy --prod --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID --dir=/doc/server-doc
       - save_cache:
           paths:
             - ./cache-folder
