@@ -100,12 +100,8 @@ workflows:
       # - apply-db-schema:
       #     requires:
       #       - install
-      - doc-build:
-          requires:
-            - build
       - deploy:
           requires:
-            - doc-build
             - build
       # - test:
       #     requires:
