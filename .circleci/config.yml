@@ -21,12 +21,11 @@ jobs:
       - run :
           name: yarn install cmd
           command: yarn install
-      - run :
-          name: install cmd
-          command: yarn start
-      - run :
-          name: build cmd
-          command: yarn build
+      - attach_workspace:
+          at: /tmp
+      - run:
+          name: Deploy app
+          command: npx netlify-cli deploy --prod --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID --dir=/tmp/server-doc
       - save_cache:
           paths:
             - ./cache-folder
@@ -69,6 +68,7 @@ workflows:
       # - apply-db-schema:
       #     requires:
       #       - install
+
       - test:
           requires:
             - build
