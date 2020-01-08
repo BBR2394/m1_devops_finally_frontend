@@ -44,8 +44,8 @@ jobs:
           keys:
             - dependencies-{{ .Environment.CACHE_VERSION }}
             - dependencies-
-      # - store_artifacts:
-      #     path: /tmp
+      - store_artifacts:
+          path: /tmp
       - run:
           name: Deploy app
           command: npx netlify-cli deploy --prod --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID_FINALTPFRT --dir=/tmp/server-build
