@@ -76,39 +76,40 @@ jobs:
           paths:
             - server-doc
 
-  # test:
-  #   docker:
-  #     - image: debian:stretch
-  #   working_directory: ~/repo
-  #   steps:
-  #     - checkout
-  #     - restore_cache:
-  #         keys:
-  #           - dependencies-{{ .Environment.CACHE_VERSION }}
-  #           # fallback to using the latest cache if no exact match is found
-  #           - dependencies-
-  # buildforprod:
-  #   docker:
-  #     - image: debian:stretch
-  #   working_directory: ~/repo
-  #   steps:
-  #     - checkout
-  #     - restore_cache:
-  #         keys:
-  #           - dependencies-{{ .Environment.CACHE_VERSION }}
-  #           # fallback to using the latest cache if no exact match is found
-  #           - dependencies-
-  #     - run:
-  #         comand: yarn build
+  docker-build-and-push:
+    working_directory: /dockerapp
+    docker:
+      - image: docker:17.05.0-ce-git
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: just an echo
+          command: echo "hello docker !"
+      - run:
+          name: build app 
+          command: |
+            docker build --cache-from=app -t app .
+      - deploy:
+          name: we publish the app on docker hub
+          environment:
+            CIRCLE_BUILD_NUM: 1
+          command: |
+            docker login -e $DOCKER_HUB_EMAIL -u $DOCKER_HUB_USER_ID -p $DOCKER_HUB_PWD
+            docker tag app $DOCKER_HUB_USER_ID/frontend_final:$CIRCLE_BUILD_NUM
+            docker tag app $DOCKER_HUB_USER_ID/frontend_final:latest
+            docker push $DOCKER_HUB_USER_ID/frontend_final:$CIRCLE_BUILD_NUM
+            docker push $DOCKER_HUB_USER_ID/frontend_final:latest
+
 
 workflows:
   version: 2
   build-general:
     jobs:
       - build-and-deploy
-      # - build:
-      #     requires:
-      #       - install
+      - docker-build-and-push:
+          requires:
+            - build-and-deploy
       # - apply-db-schema:
       #     requires:
       #       - install
