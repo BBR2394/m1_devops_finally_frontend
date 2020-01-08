@@ -30,6 +30,9 @@ jobs:
             cp ./dist /tmp/server-build -r
       - store_artifacts:
           path: /tmp/server-build
+      - run:
+          name: Deploy app
+          command: npx netlify-cli deploy --prod --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID_FINALTPFRT --dir=/dist
       - save_cache:
           paths:
             - ./cache-folder
