@@ -35,9 +35,11 @@ jobs:
           keys:
             - dependencies-{{ .Environment.CACHE_VERSION }}
             - dependencies-
+      - attach_workspace:
+          at: /tmp
       - run:
           name: Deploy app
-          command: npx netlify-cli deploy --prod --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID_FINALTPFRT
+          command: npx netlify-cli deploy --prod --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID_FINALTPFRT --dir=/tmp/server-doc
 
   test:
     docker:
