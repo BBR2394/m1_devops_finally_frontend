@@ -42,7 +42,7 @@ jobs:
           command: npx netlify-cli deploy --prod --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID_FINALTPFRT --dir=/tmp/server-doc
 
   #copy from cd tp
-  server-doc-build:
+  doc-build:
     docker:
       - image: circleci/node:dubnium-browsers
     working_directory: ~/repo
