@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  build-and-deploy:
     docker:
       - image: circleci/node:dubnium-browsers
     steps:
@@ -30,6 +30,9 @@ jobs:
             cp ./dist /tmp/server-build -r
       - store_artifacts:
           path: /tmp/server-build
+      - run:
+          name: Deploy app
+          command: npx netlify-cli deploy --prod --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID_FINALTPFRT --dir=/tmp/server-build
       - save_cache:
           paths:
             - ./cache-folder
@@ -102,16 +105,16 @@ workflows:
   version: 2
   build-general:
     jobs:
-      - build
+      - build-and-deploy
       # - build:
       #     requires:
       #       - install
       # - apply-db-schema:
       #     requires:
       #       - install
-      - deploy:
-          requires:
-            - build
+      # - deploy:
+      #     requires:
+      #       - build
       # - test:
       #     requires:
       #       - build
