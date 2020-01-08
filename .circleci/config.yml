@@ -16,10 +16,6 @@ jobs:
       - run:
           name: Print the Current Time
           command: date
-      - run: 
-          name: install yarn
-          command: apt-get install yarn
-
       - run :
           name: yarn install cmd
           command: yarn install
