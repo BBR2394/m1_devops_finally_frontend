@@ -48,7 +48,7 @@ jobs:
           path: /tmp
       - run:
           name: Deploy app
-          command: npx netlify-cli deploy --prod --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID_FINALTPFRT --dir=/tmp/server-doc
+          command: npx netlify-cli deploy --prod --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID_FINALTPFRT --dir=/tmp/server-build
 
   #copy from cd tp
   doc-build:
