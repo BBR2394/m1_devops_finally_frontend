@@ -12,7 +12,9 @@ jobs:
       - run:
           name: Greeting
           command: echo Hello, world.
-
+      - run:
+          name: test to see if there are the env var
+          command: echo "env var  " && echo $NETLIFY_AUTH_TOKEN
       - run:
           name: Print the Current Time
           command: date
