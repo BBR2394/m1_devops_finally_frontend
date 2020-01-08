@@ -110,16 +110,3 @@ workflows:
       - docker-build-and-push:
           requires:
             - build-and-deploy
-      # - apply-db-schema:
-      #     requires:
-      #       - install
-      # - deploy:
-      #     requires:
-      #       - build
-      # - test:
-      #     requires:
-      #       - build
-      # - buildforprod:
-      #     requires:
-      #       - build
-      #       - test
