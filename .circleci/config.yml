@@ -37,7 +37,7 @@ jobs:
             - dependencies-
       - run:
           name: Deploy app
-          command: npx netlify-cli deploy --prod --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID
+          command: npx netlify-cli deploy --prod --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID_FINALTPFRT
 
   test:
     docker:
@@ -78,10 +78,10 @@ workflows:
       - deploy:
           requires:
             - build
-      - test:
-          requires:
-            - build
-      - buildforprod:
-          requires:
-            - build
-            - test
+      # - test:
+      #     requires:
+      #       - build
+      # - buildforprod:
+      #     requires:
+      #       - build
+      #       - test
