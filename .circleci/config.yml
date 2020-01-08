@@ -41,30 +41,53 @@ jobs:
           name: Deploy app
           command: npx netlify-cli deploy --prod --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID_FINALTPFRT --dir=/tmp/server-doc
 
-  test:
+  #copy from cd tp
+  server-doc-build:
     docker:
-      - image: debian:stretch
+      - image: circleci/node:dubnium-browsers
     working_directory: ~/repo
     steps:
       - checkout
       - restore_cache:
           keys:
             - dependencies-{{ .Environment.CACHE_VERSION }}
-            # fallback to using the latest cache if no exact match is found
             - dependencies-
-  buildforprod:
-    docker:
-      - image: debian:stretch
-    working_directory: ~/repo
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - dependencies-{{ .Environment.CACHE_VERSION }}
-            # fallback to using the latest cache if no exact match is found
-            - dependencies-
+      - run: yarn doc:build
       - run:
-          comand: yarn build
+          name: Copy deployment artifacts to workspace
+          command: |
+            cp doc-server/ /tmp/server-doc -r
+      - store_artifacts:
+          path: /tmp/server-doc
+      - persist_to_workspace:
+          root: /tmp
+          paths:
+            - server-doc
+
+  # test:
+  #   docker:
+  #     - image: debian:stretch
+  #   working_directory: ~/repo
+  #   steps:
+  #     - checkout
+  #     - restore_cache:
+  #         keys:
+  #           - dependencies-{{ .Environment.CACHE_VERSION }}
+  #           # fallback to using the latest cache if no exact match is found
+  #           - dependencies-
+  # buildforprod:
+  #   docker:
+  #     - image: debian:stretch
+  #   working_directory: ~/repo
+  #   steps:
+  #     - checkout
+  #     - restore_cache:
+  #         keys:
+  #           - dependencies-{{ .Environment.CACHE_VERSION }}
+  #           # fallback to using the latest cache if no exact match is found
+  #           - dependencies-
+  #     - run:
+  #         comand: yarn build
 
 workflows:
   version: 2
@@ -77,8 +100,12 @@ workflows:
       # - apply-db-schema:
       #     requires:
       #       - install
+      - doc-build:
+          requires:
+            - build
       - deploy:
           requires:
+            - doc-build
             - build
       # - test:
       #     requires:
