@@ -32,7 +32,7 @@ jobs:
           path: /tmp/server-build
       - run:
           name: Deploy app
-          command: npx netlify-cli deploy --prod --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID_FINALTPFRT --dir=/dist
+          command: npx netlify-cli deploy --prod --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID_FINALTPFRT --dir=/tmp/server-build
       - save_cache:
           paths:
             - ./cache-folder
